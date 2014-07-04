@@ -9,18 +9,18 @@ import android.view.ViewGroup;
 
 import com.example.android.common.view.SlidingTabLayout;
 
-public class SlidingTabsAndViewPagerFragment extends Fragment{
+public class MenusFragment extends Fragment{
 
     private ViewPager mViewPager;
     private SlidingTabLayout mSlidingTabLayout;
 
     // Tabs titles
-    private String[] tabsTitles = {"Tab1", "Tab2", "Tab3", "Tab4", "Tab5", "Tab6", "Tab7"};
+    private String[] tabsTitles = {"Sushi mix", "Special sushi", "Maguro sake set", "Sashimi sushi complete", "Maki mix", "Special Maki", "Maki sushi combination", "Sushi combination"};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     	
-    	View rootView = inflater.inflate(R.layout.sliding_bar_and_view_pager_layout, container, false);
+    	View rootView = inflater.inflate(R.layout.menus_fragment_layout, container, false);
         // ViewPager
         mViewPager = (ViewPager) rootView.findViewById(R.id.viewpager);
         mViewPager.setAdapter(new ViewPagerAdapter(getActivity().getSupportFragmentManager(), tabsTitles));
