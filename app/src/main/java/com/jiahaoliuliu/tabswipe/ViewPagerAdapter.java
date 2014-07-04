@@ -4,19 +4,21 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-public class TabsPagerAdapter extends FragmentPagerAdapter{
+public class ViewPagerAdapter extends FragmentPagerAdapter{
 
-	/**
-	 * The total number of tabs
-	 */
-	private int totalTabs;
+	private String[] tabsTitles;
 
-	public TabsPagerAdapter(FragmentManager fm, int totalTabs) {
+    public ViewPagerAdapter(FragmentManager fm, String[] tabsTitles) {
 		super(fm);
-		this.totalTabs = totalTabs;
+        this.tabsTitles = tabsTitles;
 	}
 
-	@Override
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return tabsTitles[position];
+    }
+
+    @Override
 	public Fragment getItem(int index) {
 		switch(index % 2) {
 		case 0:
@@ -30,6 +32,6 @@ public class TabsPagerAdapter extends FragmentPagerAdapter{
 	
 	@Override
 	public int getCount() {
-		return totalTabs;
+        return tabsTitles.length;
 	}
 }

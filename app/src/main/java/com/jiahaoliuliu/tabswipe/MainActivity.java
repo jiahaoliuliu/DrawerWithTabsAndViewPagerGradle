@@ -1,34 +1,31 @@
 package com.jiahaoliuliu.tabswipe;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.ActionBar.Tab;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.MenuItem;
-
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TabHost;
-import android.widget.TabHost.OnTabChangeListener;
+
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.MenuItem;
+import com.example.android.common.view.SlidingTabLayout;
 
 public class MainActivity extends SherlockFragmentActivity {
 
 	private DrawerLayout mDrawerLayout;
 	private LinearLayout mDrawer;
 	private ActionBarDrawerToggle mDrawerToggle;
-	
-	private ViewPager viewPager;
-	private TabsPagerAdapter mAdapter;
-	private ActionBar actionBar;
+    private ActionBar actionBar;
+
+	private ViewPager mViewPager;
+    private SlidingTabLayout mSlidingTabLayout;
 
 	// Tabs titles
-	private String[] tabsTitles = {"Tab1", "Tab2", "Tab3", "Tab4"};
+	private String[] tabsTitles = {"Tab1", "Tab2", "Tab3", "Tab4", "Tab5", "Tab6", "Tab7"};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,56 +59,15 @@ public class MainActivity extends SherlockFragmentActivity {
 		};
 		
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
-		
-		// Initialization
-		final TabHost tabHost=(TabHost)findViewById(android.R.id.tabhost);
-		tabHost.setup();
-		
-		for (int i = 0; i < tabsTitles.length; i++) {
-			String tabName = tabsTitles[i];
-			TabHost.TabSpec spec=tabHost.newTabSpec(tabName);
-			spec.setContent(R.id.fakeTabContent);
-			spec.setIndicator(tabName);
-			tabHost.addTab(spec);
-		}
-
-		viewPager = (ViewPager) findViewById(R.id.pager);
 		actionBar = getSupportActionBar();
-		mAdapter = new TabsPagerAdapter(getSupportFragmentManager(), tabsTitles.length);
-		viewPager.setAdapter(mAdapter);
-		tabHost.setOnTabChangedListener(new OnTabChangeListener() {
-			
-			@Override
-			public void onTabChanged(String tabId) {
-				for (int i = 0; i < tabsTitles.length; i++) {
-					if (tabId.equals(tabsTitles[i])) {
-						viewPager.setCurrentItem(i);
-						break;
-					}
-				}
-			}
-		});
 
-		viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-			
-			@Override
-			public void onPageSelected(int position) {
-				tabHost.setCurrentTab(position);
-			}
-			
-			@Override
-			public void onPageScrolled(int arg0, float arg1, int arg2) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onPageScrollStateChanged(int arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-	}
+        // ViewPager
+        mViewPager = (ViewPager) findViewById(R.id.viewpager);
+        mViewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(), tabsTitles));
+
+        mSlidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
+        mSlidingTabLayout.setViewPager(mViewPager);
+    }
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -122,7 +78,6 @@ public class MainActivity extends SherlockFragmentActivity {
 				mDrawerLayout.openDrawer(mDrawer);
 			}
 		}
-
 		return super.onOptionsItemSelected(item);
 	}
 
