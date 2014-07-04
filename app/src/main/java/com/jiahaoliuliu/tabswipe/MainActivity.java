@@ -1,10 +1,11 @@
 package com.jiahaoliuliu.tabswipe;
 
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -12,33 +13,31 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.example.android.common.view.SlidingTabLayout;
-
 public class MainActivity extends ActionBarActivity {
 
 	private DrawerLayout mDrawerLayout;
 	private LinearLayout mDrawer;
 	private ActionBarDrawerToggle mDrawerToggle;
+
     private ActionBar actionBar;
-
-	private ViewPager mViewPager;
-    private SlidingTabLayout mSlidingTabLayout;
-
-	// Tabs titles
-	private String[] tabsTitles = {"Tab1", "Tab2", "Tab3", "Tab4", "Tab5", "Tab6", "Tab7"};
+    private Context context;
+    private FragmentManager fragmentManager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+        context = this;
+
 		// Drawer
 		mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
 		mDrawer = (LinearLayout)findViewById(R.id.drawer);
 		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 
-		getSupportActionBar().setHomeButtonEnabled(true);
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        actionBar = getSupportActionBar();
+		actionBar.setHomeButtonEnabled(true);
+		actionBar.setDisplayHomeAsUpEnabled(true);
 
 		mDrawerToggle = new ActionBarDrawerToggle(
 				this,
@@ -57,16 +56,11 @@ public class MainActivity extends ActionBarActivity {
 		};
 		
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
-		actionBar = getSupportActionBar();
 
-        /*
-        // ViewPager
-        mViewPager = (ViewPager) findViewById(R.id.viewpager);
-        mViewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(), tabsTitles));
+        // Set the fragments
+        fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.fragment_container, new SlidingTabsAndViewPagerFragment()).commit();
 
-        mSlidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
-        mSlidingTabLayout.setViewPager(mViewPager);
-        */
     }
 
 	@Override
