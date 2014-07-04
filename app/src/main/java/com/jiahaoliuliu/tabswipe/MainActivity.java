@@ -59,12 +59,14 @@ public class MainActivity extends ActionBarActivity {
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 		actionBar = getSupportActionBar();
 
+        /*
         // ViewPager
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
         mViewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(), tabsTitles));
 
         mSlidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
         mSlidingTabLayout.setViewPager(mViewPager);
+        */
     }
 
 	@Override
