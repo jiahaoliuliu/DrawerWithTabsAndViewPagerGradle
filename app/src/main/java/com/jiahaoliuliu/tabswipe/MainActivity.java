@@ -11,12 +11,12 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.widget.FrameLayout;
 
 public class MainActivity extends ActionBarActivity {
 
 	private DrawerLayout mDrawerLayout;
-	private LinearLayout mDrawer;
+	private FrameLayout mDrawer;
 	private ActionBarDrawerToggle mDrawerToggle;
 
     private ActionBar actionBar;
@@ -33,11 +33,11 @@ public class MainActivity extends ActionBarActivity {
         // Set the fragments
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.fragment_container, new MenuFragment()).commit();
-        fragmentManager.beginTransaction().add(R.id.drawer_layout, new DrawerFragment());
+        fragmentManager.beginTransaction().replace(R.id.drawer, new DrawerFragment()).commit();
 
 		// Drawer
 		mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
-		mDrawer = (LinearLayout)findViewById(R.id.drawer);
+		mDrawer = (FrameLayout)findViewById(R.id.drawer);
 		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 
         actionBar = getSupportActionBar();
