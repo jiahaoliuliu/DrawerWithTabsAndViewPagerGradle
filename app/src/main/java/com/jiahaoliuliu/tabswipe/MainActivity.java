@@ -59,7 +59,7 @@ public class MainActivity extends ActionBarActivity {
 
         // Set the fragments
         fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.fragment_container, new MenusFragment()).commit();
+        fragmentManager.beginTransaction().replace(R.id.fragment_container, new SpecialMenusFragment()).commit();
 
     }
 

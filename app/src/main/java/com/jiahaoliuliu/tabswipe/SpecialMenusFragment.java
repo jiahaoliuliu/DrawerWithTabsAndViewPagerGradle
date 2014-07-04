@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import com.example.android.common.view.SlidingTabLayout;
 
-public class MenusFragment extends Fragment{
+public class SpecialMenusFragment extends Fragment{
 
     private ViewPager mViewPager;
     private SlidingTabLayout mSlidingTabLayout;
@@ -20,7 +20,7 @@ public class MenusFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     	
-    	View rootView = inflater.inflate(R.layout.menus_fragment_layout, container, false);
+    	View rootView = inflater.inflate(R.layout.basic_slider_tab_and_view_pager_layout, container, false);
         // ViewPager
         mViewPager = (ViewPager) rootView.findViewById(R.id.viewpager);
         mViewPager.setAdapter(new ViewPagerAdapter(getActivity().getSupportFragmentManager(), tabsTitles));
