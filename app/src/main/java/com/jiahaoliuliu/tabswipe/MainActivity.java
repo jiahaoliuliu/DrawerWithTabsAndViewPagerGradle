@@ -6,15 +6,15 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.MenuItem;
 import com.example.android.common.view.SlidingTabLayout;
 
-public class MainActivity extends SherlockFragmentActivity {
+public class MainActivity extends ActionBarActivity {
 
 	private DrawerLayout mDrawerLayout;
 	private LinearLayout mDrawer;
@@ -48,12 +48,10 @@ public class MainActivity extends SherlockFragmentActivity {
 				R.string.drawer_close) {
 			
 			public void onDrawerClosed(View view) {
-				super.onDrawerClosed(view);
+                super.onDrawerClosed(view);
 			}
-			
+
 			public void onDrawerOpened(View drawerView) {
-				// Set the title on the action when drawer open
-				getSupportActionBar().setTitle("Title");
 				super.onDrawerOpened(drawerView);
 			}
 		};
