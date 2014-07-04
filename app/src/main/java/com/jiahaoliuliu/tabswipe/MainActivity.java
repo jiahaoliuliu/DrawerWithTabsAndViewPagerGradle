@@ -30,6 +30,11 @@ public class MainActivity extends ActionBarActivity {
 
         context = this;
 
+        // Set the fragments
+        fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.fragment_container, new MenuFragment()).commit();
+        fragmentManager.beginTransaction().add(R.id.drawer_layout, new DrawerFragment());
+
 		// Drawer
 		mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
 		mDrawer = (LinearLayout)findViewById(R.id.drawer);
@@ -57,9 +62,6 @@ public class MainActivity extends ActionBarActivity {
 		
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-        // Set the fragments
-        fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.fragment_container, new MenuFragment()).commit();
 
     }
 
