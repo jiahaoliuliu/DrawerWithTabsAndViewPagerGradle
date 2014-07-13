@@ -42,22 +42,20 @@ public class MainActivity extends ActionBarActivity
 
         context = this;
 
+        actionBar = getSupportActionBar();
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
         // Set the fragments
         fragmentManager = getSupportFragmentManager();
-        menuFragment = new MenuFragment();
-        fragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, menuFragment, FragmentId.MENU_FRAGMENT.toString())
-                .commit();
         fragmentManager.beginTransaction().replace(R.id.drawer, new DrawerFragment()).commit();
+        // The default fragment to show is the menu fragment
+        showNewFragmentRequested(FragmentId.MENU_FRAGMENT, false);
 
 		// Drawer
 		mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
 		mDrawer = (FrameLayout)findViewById(R.id.drawer);
 		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
-
-        actionBar = getSupportActionBar();
-		actionBar.setHomeButtonEnabled(true);
-		actionBar.setDisplayHomeAsUpEnabled(true);
 
 		mDrawerToggle = new ActionBarDrawerToggle(
 				this,
@@ -141,7 +139,11 @@ public class MainActivity extends ActionBarActivity
             case MENU_FRAGMENT:
                 // By default, show the menu fragment
             default:
-                // menu fragment fragment shouldn't be null
+                // Lazy instantiation
+                if (menuFragment == null) {
+                    menuFragment = new MenuFragment();
+                }
+
                 // If the bundle is not null, it will be set as argument of the fragment
                 // According to the official doc, the argument must be set before it has
                 // been build. This is, before the Fragment has been attached
@@ -161,6 +163,9 @@ public class MainActivity extends ActionBarActivity
         if (bundle != null) {
             fragmentToShow.setArguments(bundle);
         }
+
+        // Set the title to the action bar
+        actionBar.setTitle(fragmentId.getTitle());
 
         // Start the transaction
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
