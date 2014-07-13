@@ -109,9 +109,13 @@ public class MainActivity extends ActionBarActivity
     @Override
     public void showNewFragmentRequested(FragmentId fragmentId,
                                          boolean addToBackStack, Bundle bundle) {
+        if (fragmentId == null) {
+            throw new NullPointerException("The fragment id cannot be null");
+        }
+
         // Check if the fragment shown is the fragment requested
         Fragment fragmentShown = fragmentManager.findFragmentById(R.id.fragment_container);
-        if (fragmentShown != null && fragmentShown.getTag().equals(fragmentId.toString())) {
+        if (fragmentShown != null && fragmentId.toString().equals(fragmentShown.getTag())) {
             Log.i(TAG, "The user has selected the same fragment shown.");
             closeDrawer();
             return;
