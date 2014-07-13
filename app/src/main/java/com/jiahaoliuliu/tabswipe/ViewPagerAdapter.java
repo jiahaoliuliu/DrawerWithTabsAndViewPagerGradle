@@ -1,5 +1,6 @@
 package com.jiahaoliuliu.tabswipe;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -20,14 +21,22 @@ public class ViewPagerAdapter extends FragmentPagerAdapter{
 
     @Override
 	public Fragment getItem(int index) {
+        Fragment fragmentToShow;
+
 		switch(index % 2) {
 		case 0:
-			return new BlackFragment();
+            fragmentToShow = new BlackFragment();
+            break;
+        default:
 		case 1:
-			return new WhiteFragment();
+			fragmentToShow = new WhiteFragment();
+            break;
 		}
-		
-		return null;
+
+        Bundle args = new Bundle();
+        args.putString(BlackFragment.FRAGMENT_CONTENT_KEY, tabsTitles[index]);
+        fragmentToShow.setArguments(args);
+        return fragmentToShow;
 	}
 	
 	@Override

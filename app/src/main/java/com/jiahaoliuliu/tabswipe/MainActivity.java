@@ -4,16 +4,24 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 
-public class MainActivity extends ActionBarActivity {
+import com.jiahaoliuliu.tabswipe.interfaces.OnShowNewFragmentRequestedListener;
+
+public class MainActivity extends ActionBarActivity
+        implements OnShowNewFragmentRequestedListener{
+
+    private static final String TAG = "MainActivity";
 
 	private DrawerLayout mDrawerLayout;
 	private FrameLayout mDrawer;
@@ -22,6 +30,10 @@ public class MainActivity extends ActionBarActivity {
     private ActionBar actionBar;
     private Context context;
     private FragmentManager fragmentManager;
+
+    // Fragments
+    private Fragment menuFragment;
+    private Fragment specialMenuFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +44,10 @@ public class MainActivity extends ActionBarActivity {
 
         // Set the fragments
         fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.fragment_container, new MenuFragment()).commit();
+        menuFragment = new MenuFragment();
+        fragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, menuFragment, FragmentId.MENU_FRAGMENT.toString())
+                .commit();
         fragmentManager.beginTransaction().replace(R.id.drawer, new DrawerFragment()).commit();
 
 		// Drawer
@@ -61,8 +76,6 @@ public class MainActivity extends ActionBarActivity {
 		};
 		
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
-
-
     }
 
 	@Override
@@ -89,4 +102,86 @@ public class MainActivity extends ActionBarActivity {
 		// Pass any configuration change to the drawer toggles
 		mDrawerToggle.onConfigurationChanged(newConfig);
 	}
+
+    @Override
+    public void showNewFragmentRequested(FragmentId fragmentId, boolean addToBackStack) {
+        showNewFragmentRequested(fragmentId, addToBackStack, null);
+    }
+
+    @Override
+    public void showNewFragmentRequested(FragmentId fragmentId,
+                                         boolean addToBackStack, Bundle bundle) {
+        // Check if the fragment shown is the fragment requested
+        Fragment fragmentShown = fragmentManager.findFragmentById(R.id.fragment_container);
+        if (fragmentShown != null && fragmentShown.getTag().equals(fragmentId.toString())) {
+            Log.i(TAG, "The user has selected the same fragment shown.");
+            closeDrawer();
+            return;
+        }
+
+        // Set the fragment to show
+        Fragment fragmentToShow = null;
+        switch (fragmentId) {
+            case SPECIAL_MENU_FRAGMENT:
+                // Lazy instantiation
+                if (specialMenuFragment == null) {
+                    specialMenuFragment = new SpecialMenusFragment();
+                    // If the bundle is not null, it will be set as argument of the fragment
+                    // According to the official doc, the argument must be set before it has
+                    // been build. This is, before the Fragment has been attached
+                    // Otherwise, an IllegalStateException will be throw.
+                } else if (
+                        bundle != null &&
+                                specialMenuFragment.getArguments() != null) {
+                    specialMenuFragment = new SpecialMenusFragment();
+                }
+
+                fragmentToShow = specialMenuFragment;
+                break;
+            case MENU_FRAGMENT:
+                // By default, show the menu fragment
+            default:
+                // menu fragment fragment shouldn't be null
+                // If the bundle is not null, it will be set as argument of the fragment
+                // According to the official doc, the argument must be set before it has
+                // been build. This is, before the Fragment has been attached
+                // Otherwise, an IllegalStateException will be throw.
+                if (
+                        bundle != null &&
+                                menuFragment.getArguments() != null) {
+                    menuFragment = new MenuFragment();
+                }
+
+                fragmentToShow = menuFragment;
+                fragmentId = FragmentId.MENU_FRAGMENT;
+                break;
+        }
+
+        // Set the extra argument for the fragment
+        if (bundle != null) {
+            fragmentToShow.setArguments(bundle);
+        }
+
+        // Start the transaction
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, fragmentToShow, fragmentId.toString());
+        if (addToBackStack) {
+            fragmentTransaction.addToBackStack(fragmentId.toString());
+        }
+        fragmentTransaction.commit();
+
+        closeDrawer();
+    }
+
+    /**
+     * Close the drawer if it is open
+     */
+    private void closeDrawer() {
+        // Close the drawer if it is open
+        if (mDrawerLayout != null) {
+            if (mDrawerLayout.isDrawerOpen(mDrawer)) {
+                mDrawerLayout.closeDrawer(mDrawer);
+            }
+        }
+    }
 }
