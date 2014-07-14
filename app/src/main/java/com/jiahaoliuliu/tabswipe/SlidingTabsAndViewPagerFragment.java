@@ -23,7 +23,7 @@ public class SlidingTabsAndViewPagerFragment extends Fragment{
     	View rootView = inflater.inflate(R.layout.sliding_bar_and_view_pager_layout, container, false);
         // ViewPager
         mViewPager = (ViewPager) rootView.findViewById(R.id.viewpager);
-        mViewPager.setAdapter(new ViewPagerAdapter(getActivity().getSupportFragmentManager(), tabsTitles));
+        mViewPager.setAdapter(new ViewPagerAdapter(getChildFragmentManager(), tabsTitles));
 
         // Sliding tab layout
         mSlidingTabLayout = (SlidingTabLayout) rootView.findViewById(R.id.sliding_tabs);
