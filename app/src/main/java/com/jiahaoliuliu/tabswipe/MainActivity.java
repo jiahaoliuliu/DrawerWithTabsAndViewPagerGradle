@@ -19,7 +19,7 @@ import android.widget.FrameLayout;
 import com.jiahaoliuliu.tabswipe.interfaces.OnShowNewFragmentRequestedListener;
 
 public class MainActivity extends ActionBarActivity
-        implements OnShowNewFragmentRequestedListener{
+        implements OnShowNewFragmentRequestedListener {
 
     private static final String TAG = "MainActivity";
 
